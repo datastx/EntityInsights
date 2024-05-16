@@ -17,4 +17,3 @@ upgrade-pydantic: ## Upgrade pydantic and pydantic-settings according to sql mes
 	$(VENV)/pip install --upgrade pydantic
 	$(VENV)/pip install --upgrade pydantic-settings
 
-
