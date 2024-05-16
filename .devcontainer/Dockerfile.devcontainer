@@ -1,0 +1,55 @@
+# Base Image
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/python:0-3.10
+
+# Install system dependencies
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y curl git zsh build-essential
+
+# Install Docker
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+# Install kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    chmod +x ./kubectl && \
+    mv ./kubectl /usr/local/bin/kubectl
+
+# Install k9s
+RUN curl -LO https://github.com/derailed/k9s/releases/download/v0.24.15/k9s_Linux_x86_64.tar.gz && \
+    tar -xvf k9s_Linux_x86_64.tar.gz && \
+    chmod +x k9s && \
+    mv k9s /usr/local/bin/
+
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+RUN pip install uv
+
+# Setup workspace for vscode user
+USER vscode
+WORKDIR /workspaces/entityinsights
+
+# Install Homebrew
+RUN echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || true
+RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/vscode/.profile
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+
+# Install DuckDB with Homebrew
+RUN brew install duckdb
+
+# Install zsh related tools
+USER root
+RUN apt-get update && apt-get install -y fzf autojump
+USER vscode
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
+
+# Setup kubectl completion
+RUN kubectl completion zsh > ~/.kubectl_completion.zsh
+RUN echo "source ~/.kubectl_completion.zsh" >> ~/.zshrc
+
+# Set zsh as default shell
+USER root
+RUN chsh -s $(which zsh) vscode
+
+# Switch back to vscode user if needed further
+USER vscode

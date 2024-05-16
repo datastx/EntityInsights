@@ -1,0 +1,4 @@
+sqlmesh[github,dev,llm]
+duckdb
+flytekit
+boto3
