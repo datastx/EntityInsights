@@ -1,0 +1,39 @@
+{ 
+    "name": "EntityInsights", 
+    "build": { 
+        "dockerfile": "Dockerfile.devcontainer", 
+        "context": "..", 
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "extensions.verifySignature": false,
+            },
+            "extensions": [
+                "njpwerner.autodocstring",
+                "samuelcolvin.jinjahtml",
+                "ms-python.black-formatter",
+                "ms-python.python",
+                "ms-azuretools.vscode-docker",
+                "RandomFractalsInc.duckdb-sql-tools",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-python.isort",
+                "ms-kubernetes-tools.vscode-kubernetes-tools",
+                "ms-vscode.makefile-tools",
+                "sdras.night-owl",
+                "ms-python.vscode-pylance",
+                "ms-python.debugpy",
+                "donjayamanne.python-environment-manager",
+                "mechatroner.rainbow-csv",
+                "redhat.vscode-yaml",
+                "GitHub.vscode-github-actions",
+            ]
+        },
+        "postStartCommand": "sudo chmod 666 /var/run/docker.sock",
+        "mounts": [
+            "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+        ]
+    }
+} 
