@@ -23,6 +23,10 @@ RUN curl -LO https://github.com/derailed/k9s/releases/download/v0.24.15/k9s_Linu
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pip install uv
 
+# Install Helm
+RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+
 # Setup workspace for vscode user
 USER vscode
 WORKDIR /workspaces/entityinsights
@@ -34,6 +38,10 @@ ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
 
 # Install DuckDB with Homebrew
 RUN brew install duckdb
+
+# Install Flytectl
+RUN brew install flyteorg/homebrew-tap/flytectl
+
 
 # Install zsh related tools
 USER root

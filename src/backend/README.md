@@ -1,0 +1,1 @@
+# Backend server to connect to the database and provide API endpoints for the frontend to consume.
