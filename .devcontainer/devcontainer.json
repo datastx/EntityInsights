@@ -16,7 +16,6 @@
                 "ms-python.black-formatter",
                 "ms-python.python",
                 "ms-azuretools.vscode-docker",
-                "RandomFractalsInc.duckdb-sql-tools",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
                 "ms-python.isort",
@@ -36,7 +35,7 @@
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
-    
+    "remoteEnv": { "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" },
     "postStartCommand": "make venv",
     "remoteUser": "vscode"
 
