@@ -1,0 +1,9 @@
+bandit
+isort
+mccabe
+mypy
+pylint
+pyflakes
+pycodestyle
+radon
+ruff # replaces isort, black and flake8

@@ -17,3 +17,8 @@
 - Get the AWS credentials From the admin to replace the credentials in the .env file
 - Run the following commands
 ```
+
+
+
+### TODO:
+- https://github.com/pmd/pmd
