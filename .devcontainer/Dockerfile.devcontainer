@@ -58,6 +58,8 @@ RUN echo "source ~/.kubectl_completion.zsh" >> ~/.zshrc
 # Set zsh as default shell
 USER root
 RUN chsh -s $(which zsh) vscode
+RUN groupadd -f docker && usermod -aG docker vscode
+
 
 # Switch back to vscode user if needed further
 USER vscode
