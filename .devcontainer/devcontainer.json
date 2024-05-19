@@ -2,7 +2,7 @@
     "name": "EntityInsights", 
     "build": { 
         "dockerfile": "Dockerfile.devcontainer", 
-        "context": "..", 
+        "context": "."
     },
     "customizations": {
         "vscode": {
@@ -30,10 +30,16 @@
                 "redhat.vscode-yaml",
                 "GitHub.vscode-github-actions",
             ]
-        },
-        "postStartCommand": "sudo chmod 666 /var/run/docker.sock",
-        "mounts": [
-            "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-        ]
-    }
+        }
+    },
+    "initializeCommand": "chmod 666 /var/run/docker.sock",
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ],
+    
+    "postStartCommand": "make venv"
+
+	
+
+    
 } 

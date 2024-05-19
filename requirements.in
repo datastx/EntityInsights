@@ -1,0 +1,6 @@
+boto3
+duckdb
+flytekit
+pydantic
+pydantic-settings
+sqlmesh[github,dev,llm]
