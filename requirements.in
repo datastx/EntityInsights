@@ -1,9 +1,6 @@
+apache-airflow[trino]
 boto3
 databend
 duckdb
-flytekit
-numpy
-pendulum
-pydantic
-pydantic-settings
-sqlmesh[github,dev,llm]
+airflowctl
+sqlmesh[github,dev,llm,trino]

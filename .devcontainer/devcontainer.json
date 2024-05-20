@@ -1,4 +1,4 @@
-{ 
+{
     "name": "EntityInsights", 
     "build": { 
         "dockerfile": "Dockerfile.devcontainer", 
@@ -9,6 +9,10 @@
             "settings": {
                 "terminal.integrated.defaultProfile.linux": "zsh",
                 "extensions.verifySignature": false,
+                "python.pythonPath": "/workspaces/EntityInsights/.venv/bin/python",
+                "python.defaultInterpreterPath": "/workspaces/EntityInsights/.venv/bin/python",
+                "terminal.integrated.shell.linux": "/bin/zsh",
+                "terminal.integrated.shellArgs.linux": ["-c", ". /workspaces/EntityInsights/.venv/bin/activate && zsh"]
             },
             "extensions": [
                 "njpwerner.autodocstring",
@@ -27,7 +31,7 @@
                 "donjayamanne.python-environment-manager",
                 "mechatroner.rainbow-csv",
                 "redhat.vscode-yaml",
-                "GitHub.vscode-github-actions",
+                "GitHub.vscode-github-actions"
             ]
         }
     },
@@ -36,11 +40,7 @@
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
     "remoteEnv": { "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" },
-    "postStartCommand": "make venv && chmod +x .venv/bin/activate && . .venv/bin/activate",
-
+    "forwardPorts": [8793],
+    "postStartCommand": "make venv && chmod +x /workspaces/EntityInsights/.venv && . /workspaces/EntityInsights/.venv/bin/activate",
     "remoteUser": "vscode"
-
-	
-
-    
-} 
+}
