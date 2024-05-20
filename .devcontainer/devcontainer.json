@@ -36,7 +36,8 @@
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
     "remoteEnv": { "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" },
-    "postStartCommand": "make venv",
+    "postStartCommand": "make venv && chmod +x .venv/bin/activate && . .venv/bin/activate",
+
     "remoteUser": "vscode"
 
 	

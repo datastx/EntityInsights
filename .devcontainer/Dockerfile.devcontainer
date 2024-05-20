@@ -2,8 +2,9 @@
 FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/python:0-3.10
 
 # Install system dependencies
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y curl git zsh build-essential
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y curl git zsh build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Docker
 RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
@@ -26,7 +27,6 @@ RUN pip install uv
 # Install Helm
 RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-
 # Setup workspace for vscode user
 USER vscode
 WORKDIR /workspaces/entityinsights
@@ -36,16 +36,22 @@ RUN echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/vscode/.profile
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
 
+# Explicitly install Python 3.10 via Homebrew and set it as default
+RUN brew cleanup && rm -rf $(brew --cache)
+RUN brew install python@3.10
+RUN brew link --force python@3.10
+
 # Install DuckDB with Homebrew
 RUN brew install duckdb
 
 # Install Flytectl
 RUN brew install flyteorg/homebrew-tap/flytectl
 
-
 # Install zsh related tools
 USER root
-RUN apt-get update && apt-get install -y fzf autojump
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y fzf autojump && \
+    rm -rf /var/lib/apt/lists/*
 USER vscode
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -59,7 +65,6 @@ RUN echo "source ~/.kubectl_completion.zsh" >> ~/.zshrc
 USER root
 RUN chsh -s $(which zsh) vscode
 RUN groupadd -f docker && usermod -aG docker vscode
-
 
 # Switch back to vscode user if needed further
 USER vscode

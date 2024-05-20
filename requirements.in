@@ -1,6 +1,9 @@
 boto3
+databend
 duckdb
 flytekit
+numpy
+pendulum
 pydantic
 pydantic-settings
 sqlmesh[github,dev,llm]
