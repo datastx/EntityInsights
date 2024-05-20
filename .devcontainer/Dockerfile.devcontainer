@@ -6,8 +6,17 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y curl git zsh build-essential && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Docker
-RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+# Install Docker dependencies and Docker itself
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null && \
+    apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
@@ -35,11 +44,6 @@ WORKDIR /workspaces/entityinsights
 RUN echo | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || true
 RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/vscode/.profile
 ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
-
-# Explicitly install Python 3.10 via Homebrew and set it as default
-RUN brew cleanup && rm -rf $(brew --cache)
-RUN brew install python@3.10
-RUN brew link --force python@3.10
 
 # Install DuckDB with Homebrew
 RUN brew install duckdb
